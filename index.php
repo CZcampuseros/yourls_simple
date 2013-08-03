@@ -5,7 +5,7 @@
 
 	include('config.php');
 
-	if ( $config['server'] && $config['username'] && $config['password'] && $config['database'] ) {
+	if ( !empty($config['server']) && !empty($config['username']) && !empty($config['password']) && !empty($config['database']) ) {
 		$mysqli = new mysqli($config['server'], $config['username'], $config['password'], $config['database']);
 	}
 
