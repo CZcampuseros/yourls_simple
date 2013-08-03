@@ -5,7 +5,9 @@
 
 	include('config.php');
 
-	$mysqli = new mysqli($config['server'], $config['username'], $config['password'], $config['database']);
+	if ( $config['server'] && $config['username'] && $config['password'] && $config['database'] ) {
+		$mysqli = new mysqli($config['server'], $config['username'], $config['password'], $config['database']);
+	}
 
 	$pass = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_POST['pass'], ENT_NOQUOTES), ENT_NOQUOTES)));
 	$rows = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_GET['rows'], ENT_NOQUOTES), ENT_NOQUOTES)));
