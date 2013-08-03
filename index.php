@@ -7,11 +7,11 @@
 
 	if ( !empty($config['server']) && !empty($config['username']) && !empty($config['password']) && !empty($config['database']) ) {
 		$mysqli = new mysqli($config['server'], $config['username'], $config['password'], $config['database']);
-	}
 
-	$pass = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_POST['pass'], ENT_NOQUOTES), ENT_NOQUOTES)));
-	$rows = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_GET['rows'], ENT_NOQUOTES), ENT_NOQUOTES)));
-	if ( empty($rows) ) { $rows = 500; }
+		$pass = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_POST['pass'], ENT_NOQUOTES), ENT_NOQUOTES)));
+		$rows = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_GET['rows'], ENT_NOQUOTES), ENT_NOQUOTES)));
+		if ( empty($rows) ) { $rows = 500; }
+	}
 
 	if ( empty($pass) && empty($_SESSION['login']) ) {
 ?>
