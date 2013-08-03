@@ -3,12 +3,12 @@
 	chdir(dirname($_SERVER['SCRIPT_FILENAME']));
 	session_start();
 
-	$pass = trim(htmlspecialchars(htmlspecialchars_decode($_POST['pass'], ENT_NOQUOTES), ENT_NOQUOTES));
-	$numb = trim(htmlspecialchars(htmlspecialchars_decode($_GET['numb'], ENT_NOQUOTES), ENT_NOQUOTES));
-
 	include('config.php');
 
 	$mysqli = new mysqli($config['server'], $config['username'], $config['password'], $config['database']);
+
+	$pass = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_POST['pass'], ENT_NOQUOTES), ENT_NOQUOTES)));
+	$numb = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_GET['numb'], ENT_NOQUOTES), ENT_NOQUOTES)));
 
 	if ( empty($pass) && empty($_SESSION['login']) ) {
 ?>
@@ -48,6 +48,32 @@
 	</head>
 	<body>
 		<h1>YOURLS simple</h1>
+		<table>
+		<tr>
+			<th>Keyword</th>
+			<th>URL</th>
+			<th>Title</th>
+			<th>Timestap</th>
+			<th>IP</th>
+			<th>Clicks</th>
+		</tr>
+<?php
+	if($result = $mysqli->query('SELECT * FROM yourls_url;')) {
+		while($obj = $result->fetch_object()) {
+?>
+			<tr>
+				<td><?php echo $obj->keyword; ?></td>
+				<td><?php echo $obj->url; ?></td>
+				<td><?php echo $obj->title; ?></td>
+				<td><?php echo $obj->timestamp; ?></td>
+				<td><?php echo $obj->ip; ?></td>
+				<td><?php echo $obj->clicks; ?></td>
+			</tr>
+<?php
+		}
+	}
+?>
+		</table>
 	</body>
 </html>
 <?php
