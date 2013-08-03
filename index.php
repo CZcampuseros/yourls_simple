@@ -52,7 +52,8 @@
 			td { padding: 5px 10px; }
 			h1 { margin: 0px 25px; }
 			h1,form { display: inline-block; }
-			.title { max-width: 150px; }
+			.url { max-width: 250px; overflow: auto; }
+			.title { max-width: 150px; overflow: auto; }
 			tr:hover { background-color: #ffd; }
 		</style>
 	</head>
