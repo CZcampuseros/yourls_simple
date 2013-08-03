@@ -54,6 +54,9 @@
 			h1,form { display: inline-block; }
 			.url { max-width: 250px; overflow: auto; }
 			.title { max-width: 150px; overflow: auto; }
+			.ip { min-width: 110px; }
+			.keyword { min-width: 60px; }
+			.timestamp { min-width: 150px; }
 			tr:hover { background-color: #ffd; }
 		</style>
 	</head>
