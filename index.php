@@ -10,6 +10,10 @@
 
 		$pass = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_POST['pass'], ENT_NOQUOTES), ENT_NOQUOTES)));
 		$rows = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_GET['rows'], ENT_NOQUOTES), ENT_NOQUOTES)));
+		$column = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_GET['column'], ENT_NOQUOTES), ENT_NOQUOTES)));
+		$search = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_GET['search'], ENT_NOQUOTES), ENT_NOQUOTES)));
+
+		if ( empty($column) ) { $column = 'url'; }
 		if ( empty($rows) ) { $rows = 500; }
 	}
 
@@ -63,9 +67,20 @@
 	<body>
 		<h1>YOURLS simple</h1>
 		<form method="get">
-			<label for="rows">Number of rows: </label>
-			<input type="text" id="rows" name="rows" size="12" maxlength="12" value="<?php echo $rows; ?>"></input>
-			<input type="submit" value="Login"></input>
+			<label for="rows">Rows: </label>
+			<input type="text" id="rows" name="rows" size="6" maxlength="12" value="<?php echo $rows; ?>"></input>
+			<label for="search">Search: </label>
+			<input type="text" id="search" name="search" size="46" value="<?php echo $search; ?>"></input>
+			<select name="column">
+				<option value="url" <?php if ( $column == 'url' ) { echo 'selected="selected"'; } ?>>URL</option>
+				<option value="keyword" <?php if ( $column == 'keyword' ) { echo 'selected="selected"'; } ?>>Keyword</option>
+				<option value="title" <?php if ( $column == 'title' ) { echo 'selected="selected"'; } ?>>Title</option>
+				<option value="ip" <?php if ( $column == 'ip' ) { echo 'selected="selected"'; } ?>>IP</option>
+			</select>
+			<input type="submit" value="OK"></input>
+		</form>
+		<form method="get">
+			<input type="submit" value="Clean"></input>
 		</form>
 		<table>
 			<tr>
@@ -77,7 +92,10 @@
 				<th class="clicks">Clicks</th>
 			</tr>
 <?php
-	if($result = $mysqli->query('SELECT * FROM yourls_url ORDER BY `yourls_url`.`timestamp` DESC LIMIT 0,'.$rows.';')) {
+	if ( !empty($search) ) {
+		$where = 'WHERE `'.$column."` regexp '".$search."'";
+	}
+	if($result = $mysqli->query('SELECT * FROM yourls_url '.$where.' ORDER BY `yourls_url`.`timestamp` DESC LIMIT 0,'.$rows.';')) {
 		while($obj = $result->fetch_object()) {
 ?>
 			<tr>
