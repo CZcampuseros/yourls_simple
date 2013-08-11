@@ -4,6 +4,8 @@
 		'database' => '',
 		'username' => '',
 		'password' => '',
-		'htpass' => ''
+		'htpass' => '',
+		'yourlsurl' => '',
+		'prefix' => ''
 	);
 ?>

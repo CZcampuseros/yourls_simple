@@ -14,7 +14,7 @@
 		$search = $mysqli->real_escape_string(trim(htmlspecialchars(htmlspecialchars_decode($_GET['search'], ENT_NOQUOTES), ENT_NOQUOTES)));
 
 		if ( empty($column) ) { $column = 'url'; }
-		if ( empty($rows) ) { $rows = 500; }
+		if ( empty($rows) ) { $rows = 15; }
 	}
 
 	if ( empty($pass) && empty($_SESSION['login']) ) {
@@ -70,7 +70,7 @@
 			<label for="rows">Rows: </label>
 			<input type="text" id="rows" name="rows" size="6" maxlength="12" value="<?php echo $rows; ?>"></input>
 			<label for="search">Search: </label>
-			<input type="text" id="search" name="search" size="46" value="<?php echo $search; ?>"></input>
+			<input type="text" id="search" name="search" size="32" value="<?php echo $search; ?>"></input>
 			<select name="column">
 				<option value="url" <?php if ( $column == 'url' ) { echo 'selected="selected"'; } ?>>URL</option>
 				<option value="keyword" <?php if ( $column == 'keyword' ) { echo 'selected="selected"'; } ?>>Keyword</option>
@@ -95,12 +95,12 @@
 	if ( !empty($search) ) {
 		$where = 'WHERE `'.$column."` regexp '".$search."'";
 	}
-	if($result = $mysqli->query('SELECT * FROM yourls_url '.$where.' ORDER BY `yourls_url`.`timestamp` DESC LIMIT 0,'.$rows.';')) {
+	if($result = $mysqli->query('SELECT * FROM '.$config['prefix'].'url '.$where.' ORDER BY `'.$config['prefix'].'url`.`timestamp` DESC LIMIT 0,'.$rows.';')) {
 		while($obj = $result->fetch_object()) {
 ?>
 			<tr>
-				<td class="keyword"><?php echo $obj->keyword; ?></td>
-				<td class="url"><?php echo $obj->url; ?></td>
+				<td class="keyword"><?php echo $config['yourlsurl'].$obj->keyword; ?> (<a href="<?php echo $config['yourlsurl'].$obj->keyword; ?>">link</a>)</td>
+				<td class="url"><?php echo $obj->url; ?> (<a href="<?php echo $obj->url; ?>">link</a>)</td>
 				<td class="title"><?php echo $obj->title; ?></td>
 				<td class="timestamp"><?php echo $obj->timestamp; ?></td>
 				<td class="ip"><?php echo $obj->ip; ?></td>
